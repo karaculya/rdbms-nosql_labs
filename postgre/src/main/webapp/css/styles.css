@@ -1,0 +1,82 @@
+body {
+    background: rgb(4,13,59);
+    background: radial-gradient(circle, rgba(4,13,59,1) 0%, rgba(59,47,194,1) 35%, rgba(105,141,204,1) 100%);
+}
+
+nav {
+    padding-top: 15px;
+}
+
+section {
+    background-color: #F4F5F9;
+    min-height: 70vh;
+    border-radius: 0.5rem;
+}
+
+.card-form, .add-btn {
+    border-radius: 0.5rem;
+    height: 35vh;
+    width: 30vh;
+}
+
+.card-form{
+    background: #8fb2ee;
+    color: black;
+}
+
+.add-btn {
+    background: #3b2fc2;
+    color: white;
+    cursor: pointer;
+}
+
+card {
+    border-radius: 0.5rem; /* Скругление углов */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тень */
+    transition: box-shadow 0.3s ease; /* Плавный переход */
+}
+
+card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Тень при наведении */
+}
+
+.editForm {
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    width: 50%;
+    background: #dee2e6;
+}
+
+.comp .options {
+    display: none;
+}
+
+.comp:hover {
+    border: 2px solid #3b2fc2;
+}
+
+.comp:hover .options {
+    display: flex;
+}
+
+.comp:hover .duration {
+    display: none;
+}
+
+.dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+}
+
+.more-options {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.more-options img {
+    width: 20px;
+    height: 20px;
+}
