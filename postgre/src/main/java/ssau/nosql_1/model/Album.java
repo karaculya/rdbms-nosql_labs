@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.model;
+package ssau.nosql_1.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

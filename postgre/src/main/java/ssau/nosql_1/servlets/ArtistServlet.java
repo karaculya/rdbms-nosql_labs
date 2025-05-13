@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.servlets;
+package ssau.nosql_1.servlets;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

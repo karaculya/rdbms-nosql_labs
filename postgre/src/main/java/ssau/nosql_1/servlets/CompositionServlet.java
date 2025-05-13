@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.servlets;
+package ssau.nosql_1.servlets;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;

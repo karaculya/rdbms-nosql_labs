@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.dao.impl;
+package ssau.nosql_1.dao.impl;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

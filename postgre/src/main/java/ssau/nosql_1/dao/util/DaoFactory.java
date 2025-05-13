@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.dao.util;
+package ssau.nosql_1.dao.util;
 
 import ssau.nosql_1.dao.AlbumDao;
 import ssau.nosql_1.dao.ArtistDao;

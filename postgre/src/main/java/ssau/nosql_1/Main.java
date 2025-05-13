@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1;
+package ssau.nosql_1;
 
 import ssau.nosql_1.dao.util.DaoFactory;
 import ssau.nosql_1.model.Artist;

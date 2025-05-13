@@ -1,4 +1,4 @@
-package main.java.ssau.nosql_1.dao.util;
+package ssau.nosql_1.dao.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
