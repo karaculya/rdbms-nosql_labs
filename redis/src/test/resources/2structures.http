@@ -1,0 +1,35 @@
+### 1. Очистка данных перед тестами
+DELETE http://localhost:8080/charts/reset-stats
+
+### 2. Добавление песен в топ
+POST http://localhost:8080/charts/top-songs?songName=Bohemian%20Rhapsody
+
+###
+POST http://localhost:8080/charts/top-songs?songName=Stairway%20to%20Heaven
+
+### 3. Запись прослушиваний
+POST http://localhost:8080/charts/record-play/1
+
+###
+POST http://localhost:8080/charts/record-play/1
+
+### 4. Проверка статистики
+GET http://localhost:8080/charts/play-count/1
+
+### 5. Добавление жанров артистам
+POST http://localhost:8080/charts/artist-genres/1?genre=Rock
+
+###
+POST http://localhost:8080/charts/artist-genres/1?genre=Progressive
+
+### 6. Получение жанров артиста
+GET http://localhost:8080/charts/artist-genres/1
+
+### 7. Создание ежедневного чарта
+POST http://localhost:8080/charts/daily-charts/today?hoursToLive=24
+Content-Type: application/json
+
+["1", "2"]
+
+### 8. Получение ежедневного чарта
+GET http://localhost:8080/charts/daily-charts/today

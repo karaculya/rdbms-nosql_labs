@@ -1,0 +1,122 @@
+### artists test
+POST http://localhost:8080/artist
+Content-Type: application/json
+
+{ "id" : 1, "name": "Skillet"}
+
+###
+POST http://localhost:8080/artist
+Content-Type: application/json
+
+{ "id" : 2, "name": "Nirvana"}
+
+###
+GET http://localhost:8080/artist/1
+
+<> 2025-05-15T004843.200.json
+<> 2025-05-14T235205.500.json
+<> 2025-05-14T025216.500.json
+<> 2025-05-14T025031.500.json
+<> 2025-05-14T025025.500.json
+<> 2025-05-14T025018.500.json
+<> 2025-05-14T024619.500.json
+<> 2025-05-14T024403.500.json
+<> 2025-05-14T024350.500.json
+<> 2025-05-14T024253.500.json
+
+###
+DELETE http://localhost:8080/artist/1
+
+###
+GET http://localhost:8080/artist
+
+<> 2025-05-14T235806.500.json
+<> 2025-05-14T025056.200.json
+<> 2025-05-14T024553.200.json
+
+###
+PUT http://localhost:8080/artist/2
+Content-Type: application/json
+
+{ "id" : 2, "name": "Placebo"}
+
+###
+GET http://localhost:8080/artist
+
+### albums test
+POST http://localhost:8080/album
+Content-Type: application/json
+
+{ "id": 1, "name": "Awake", "genre": "Christian Rock", "artistId": 1 }
+
+###
+POST http://localhost:8080/album
+Content-Type: application/json
+
+{ "id": 2, "name": "Comatose", "genre": "Alternative Metal", "artistId": 1 }
+
+###
+POST http://localhost:8080/album
+Content-Type: application/json
+
+{ "id": 3, "name": "Rise", "genre": "Rock", "artistId": 1 }
+
+###
+GET http://localhost:8080/album/1
+
+###
+GET http://localhost:8080/album
+
+###
+PUT http://localhost:8080/album/2
+Content-Type: application/json
+
+{ "id": 2, "name": "Comatose", "genre": "Alternative Metal", "artistId": 1 }
+
+###
+DELETE http://localhost:8080/album/1
+
+### compositions test
+POST http://localhost:8080/composition
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Hero",
+  "duration": "00:03:07",
+  "albumId": 1
+}
+
+###
+POST http://localhost:8080/composition
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Monster",
+  "duration": "00:02:58",
+  "albumId": 1
+}
+
+###
+GET http://localhost:8080/composition/by-album/1
+
+###
+PUT http://localhost:8080/composition/2
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Monster (Extended Version)",
+  "duration": "00:03:25",
+  "albumId": 1
+}
+
+###
+GET http://localhost:8080/composition
+
+###
+DELETE http://localhost:8080/composition/1
+
+###
+GET http://localhost:8080/composition/by-album/1

@@ -17,7 +17,7 @@ public class ClickHouseConnector {
     public ClickHouseConnector() {
         Properties properties = new Properties();
         ClickHouseProperties clickHouseProperties = new ClickHouseProperties();
-        try (FileInputStream inputStream = new FileInputStream("src/main/resources/application.properties")) {
+        try (FileInputStream inputStream = new FileInputStream("C:\\Users\\sirar\\IdeaProjects\\rdbms&nosql_labs\\clickhouse\\src\\main\\resources\\application.properties")) {
             properties.load(inputStream);
             clickHouseProperties.setUser(properties.getProperty("user"));
             clickHouseProperties.setPassword(properties.getProperty("password"));

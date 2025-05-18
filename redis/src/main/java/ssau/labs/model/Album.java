@@ -6,14 +6,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
-@RedisHash("Album")
-public class Album {
-    @Id
-    @Indexed
+public class Album implements Serializable {
     private Integer id;
     private String name;
     private String genre;
-    private Artist artist;
+    private Integer artistId;
 }
