@@ -1,4 +1,4 @@
-package ssau.labs.repo.impl;
+package ssau.labs.repo;
 
 import ssau.labs.db.MutationChecker;
 import ssau.labs.model.Artist;

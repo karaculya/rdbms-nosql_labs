@@ -1,10 +1,9 @@
-package ssau.labs.repo.impl;
+package ssau.labs.repo;
 
 import ssau.labs.db.ClickHouseConnector;
 import ssau.labs.db.MutationChecker;
 import ssau.labs.model.Album;
 import ssau.labs.model.Artist;
-import ssau.labs.repo.CrudRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

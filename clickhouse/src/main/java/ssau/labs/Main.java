@@ -5,9 +5,9 @@ import ssau.labs.mergeTrees.ArtistCollapsingMergeTree;
 import ssau.labs.mergeTrees.ArtistReplacingMergeTree;
 import ssau.labs.model.Album;
 import ssau.labs.model.Artist;
-import ssau.labs.repo.impl.AlbumRepository;
+import ssau.labs.repo.AlbumRepository;
 import ssau.labs.db.OtherQueriesExecutor;
-import ssau.labs.repo.impl.ArtistRepository;
+import ssau.labs.repo.ArtistRepository;
 
 public class Main {
     public static void main(String[] args) {
