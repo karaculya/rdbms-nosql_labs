@@ -1,0 +1,64 @@
+###
+POST http://localhost:8080/api/compositions
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Numb",
+  "duration": "00:03:07",
+  "albumId": "1"
+}
+
+###
+POST http://localhost:8080/api/compositions
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "sdb",
+  "duration": "00:03:07",
+  "albumId": "1"
+}
+
+###
+POST http://localhost:8080/api/compositions
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "dvdhfjv",
+  "duration": "00:03:07",
+  "albumId": "2"
+}
+
+###
+GET http://localhost:8080/api/compositions
+
+###
+GET http://localhost:8080/api/compositions/1
+
+###
+GET http://localhost:8080/api/compositions/album/1
+
+###
+PUT http://localhost:8080/api/compositions/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Numb (Live)",
+  "duration": "00:03:45",
+  "albumId": "1"
+}
+
+###
+DELETE http://localhost:8080/api/compositions/1
+
+###
+DELETE http://localhost:8080/api/compositions
+
+###
+PUT http://localhost:8080/api/compositions/album/1/3
+
+###
+DELETE http://localhost:8080/api/compositions/album/2
