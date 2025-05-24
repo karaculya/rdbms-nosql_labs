@@ -1,0 +1,119 @@
+POST http://localhost:8080/api/artist
+Content-Type: application/json
+
+{
+  "name": "Placebo"
+}
+
+###
+POST http://localhost:8080/api/artist
+Content-Type: application/json
+
+{
+  "name": "Slipknot"
+}
+
+###
+GET http://localhost:8080/api/artist
+
+###
+GET http://localhost:8080/api/artist/Placebo
+
+###
+DELETE http://localhost:8080/api/artist/Slipknot
+
+###
+PUT http://localhost:8080/api/artist/Placebo
+Content-Type: application/json
+
+{
+  "name": "Nirvana"
+}
+###
+DELETE http://localhost:8080/api/artist
+
+###
+POST http://localhost:8080/api/album
+Content-Type: application/json
+
+{
+  "name": "Sulfur",
+  "genre": "Metal",
+  "artistName": "Slipknot"
+}
+
+###
+POST http://localhost:8080/api/album
+Content-Type: application/json
+
+{
+  "name": "Bleach",
+  "genre": "Rock",
+  "artistName": "Nirvana"
+}
+
+###
+GET http://localhost:8080/api/album
+
+###
+GET http://localhost:8080/api/album/Sulfur
+
+###
+PUT http://localhost:8080/api/album/Sulfur
+Content-Type: application/json
+
+{
+  "name": "Sulfur Remastered",
+  "genre": "Progressive Metal",
+  "artistName": "Slipknot"
+}
+
+###
+POST http://localhost:8080/api/album/relation/Sulfur/Slipknot/2009
+
+### Удаление в связи альбома с артистом года релиза
+DELETE http://localhost:8080/api/album/relation/Sulfur/Slipknot/released
+
+### Удаление альбома по имени
+DELETE http://localhost:8080/api/album/Sulfur%20Remastered
+
+### Удаление связи альбома с артистом
+DELETE http://localhost:8080/api/album/relation/Sulfur/Slipknot
+
+### Удаление всех альбомов
+DELETE http://localhost:8080/api/album
+
+###
+POST http://localhost:8080/api/composition
+Content-Type: application/json
+
+{
+  "name": "Sulfur",
+  "duration": "4:04",
+  "albumName": "Sulfur"
+}
+
+###
+GET http://localhost:8080/api/composition
+
+###
+GET http://localhost:8080/api/composition/Sulfur
+
+###
+PUT http://localhost:8080/api/composition/Sulfur
+Content-Type: application/json
+
+{
+  "name": "Sulfur (Remix)",
+  "duration": "6:20",
+  "albumName": "Sulfur"
+}
+
+### Удаление композиции по названию
+DELETE http://localhost:8080/api/composition/Sulfur
+
+### Удаление связи композиции с альбомом
+DELETE http://localhost:8080/api/composition/relation/Sulfur%20(Remix)/Sulfur
+
+### Удаление всех композиций
+DELETE http://localhost:8080/api/composition
