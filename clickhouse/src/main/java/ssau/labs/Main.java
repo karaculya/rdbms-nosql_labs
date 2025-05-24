@@ -1,13 +1,13 @@
 package ssau.labs;
 
 import ssau.labs.db.ClickHouseConnector;
-import ssau.labs.mergeTrees.ArtistCollapsingMergeTree;
-import ssau.labs.mergeTrees.ArtistReplacingMergeTree;
+import ssau.labs.repo.mergeTrees.ArtistCollapsingMergeTree;
+import ssau.labs.repo.mergeTrees.ArtistReplacingMergeTree;
 import ssau.labs.model.Album;
 import ssau.labs.model.Artist;
-import ssau.labs.repo.AlbumRepository;
 import ssau.labs.db.OtherQueriesExecutor;
-import ssau.labs.repo.ArtistRepository;
+import ssau.labs.repo.impl.AlbumRepository;
+import ssau.labs.repo.impl.ArtistRepository;
 
 public class Main {
     public static void main(String[] args) {
@@ -87,11 +87,11 @@ public class Main {
 //        /* Artist with replacingMergeTree
         ArtistReplacingMergeTree replacingMergeTree = new ArtistReplacingMergeTree(connector);
 
-        replacingMergeTree.insert(coldplay, 2020);
-        replacingMergeTree.insert(coldplay, 2021);
-        replacingMergeTree.insert(coldplay, 2022);
+        replacingMergeTree.insert(coldplay, 1);
+        replacingMergeTree.insert(coldplay, 2);
+        replacingMergeTree.insert(coldplay, 3);
 
-        replacingMergeTree.selectWithLimitBy();
+        replacingMergeTree.select();
         System.out.println("-----------------------------------");
 //         */
 //        /* Artist with collapsingMergeTree
@@ -101,7 +101,7 @@ public class Main {
         collapsingMergeTree.insert(mujuice, 1);
         collapsingMergeTree.insert(coldplay, -1);
 
-        collapsingMergeTree.selectWithGroupByHaving();
+        collapsingMergeTree.select();
 //         */
     }
 }

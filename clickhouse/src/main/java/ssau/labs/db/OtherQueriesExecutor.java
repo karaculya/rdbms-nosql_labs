@@ -62,8 +62,8 @@ public class OtherQueriesExecutor {
         System.out.println("genre | " + "album_count");
 
         try (ClickHouseConnection connection = connector.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
+             Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(sql);
 
             while (rs.next()) {
                 String genre = rs.getString("genre");
@@ -78,14 +78,18 @@ public class OtherQueriesExecutor {
     private void executeQueryAndPrintResult(String query) {
         try {
             StringBuffer result = new StringBuffer("artist_name | album_name\n");
-            ResultSet rs = ClickHouseConnector.executeQuery(connector.getConnection(), query);
 
-            while (rs.next()) {
-                result.append(rs.getString("artist_name") + " | ");
-                result.append(rs.getString("album_name") + "\n");
+            try (ClickHouseConnection connection = connector.getConnection();
+                 Statement statement = connection.createStatement()) {
+                ResultSet rs = statement.executeQuery(query);
+
+                while (rs.next()) {
+                    result.append(rs.getString("artist_name")).append(" | ");
+                    result.append(rs.getString("album_name")).append("\n");
+                }
+
+                System.out.println(result);
             }
-
-            System.out.println(result);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,12 +1,15 @@
-package ssau.labs.repo;
+package ssau.labs.repo.impl;
 
 import ssau.labs.db.ClickHouseConnector;
 import ssau.labs.db.MutationChecker;
 import ssau.labs.model.Album;
 import ssau.labs.model.Artist;
+import ssau.labs.repo.CrudRepository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +34,8 @@ public class AlbumRepository implements CrudRepository<Album> {
                 ") ENGINE = MergeTree() " +
                 "ORDER BY id";
 
-        try {
-            ClickHouseConnector.execute(connector.getConnection(), query);
+        try (Statement statement = connector.getConnection().createStatement()) {
+            statement.execute(query);
         } catch (SQLException e) {
             System.out.println("Failed to creating TABLE albums");
             e.printStackTrace();
@@ -41,15 +44,16 @@ public class AlbumRepository implements CrudRepository<Album> {
 
     @Override
     public void save(Album album) {
-        String query = "INSERT INTO albums (id, name, genre, artist_id) VALUES ('"
-                + album.getId() + "', '"
-                + album.getName() + "', '"
-                + album.getGenre() + "', '"
-                + album.getArtist().getId() + "')";
-        try {
+        String query = "INSERT INTO albums (id, name, genre, artist_id) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connector.getConnection().prepareStatement(query)) {
+            statement.setInt(1, album.getId());
+            statement.setString(2, album.getName());
+            statement.setString(3, album.getGenre());
+            statement.setInt(4, album.getArtist().getId());
+            statement.executeUpdate();
             boolean isDone = false;
             while (!isDone) {
-                isDone = ClickHouseConnector.mutationIsDone(connector.getConnection(), checker, query);
+                isDone = checker.mutationIsDone();
             }
         } catch (SQLException e) {
             System.out.println("Failed to creating album");
@@ -59,29 +63,14 @@ public class AlbumRepository implements CrudRepository<Album> {
 
     @Override
     public Album findById(Integer id) {
-        String query = "SELECT * FROM albums WHERE id = '" + id + "'";
+        String query = "SELECT * FROM albums WHERE id = ?";
 
-        try {
-            ResultSet set = ClickHouseConnector.executeQuery(connector.getConnection(), query);
-            if (set != null) {
-                while (set.next()) {
-                    Album album = new Album();
-                    album.setId(set.getInt("id"));
-                    album.setName(set.getString("name"));
-                    album.setGenre(set.getString("genre"));
-                    Integer artistId = set.getInt("artist_id");
-                    Artist artist = artistRepository.findById(artistId);
-                    if (artist.getId().equals(artistId)) {
-                        album.setArtist(artist);
-                    }
-                    return album;
-                }
+        try (PreparedStatement statement = connector.getConnection().prepareStatement(query)) {
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            if (set != null && set.next()) {
+                return createAlbumByResultSet(set);
             }
-            int alId = set.getInt("id");
-            String name = set.getString("name");
-            String genre = set.getString("genre");
-            int arId = set.getInt("artist_id");
-            return new Album(alId, name, genre, artistRepository.findById(arId));
         } catch (SQLException e) {
             System.out.println("Failed to findById album");
             e.printStackTrace();
@@ -91,15 +80,16 @@ public class AlbumRepository implements CrudRepository<Album> {
 
     @Override
     public void update(Album album) {
-        String query = "ALTER TABLE albums UPDATE name='" + album.getName() + "'," +
-                " genre = '" + album.getGenre() + "', " +
-                "artist_id = '" + album.getArtist().getId() +
-                "' WHERE id='" + album.getId() + "'";
-
-        try {
+        String query = "ALTER TABLE albums UPDATE name= ?, genre = ?, artist_id = ? WHERE id= ?";
+        try (PreparedStatement statement = connector.getConnection().prepareStatement(query)) {
+            statement.setString(1, album.getName());
+            statement.setString(2, album.getGenre());
+            statement.setInt(3, album.getArtist().getId());
+            statement.setInt(4, album.getId());
+            statement.executeUpdate();
             boolean isDone = false;
             while (!isDone) {
-                isDone = ClickHouseConnector.mutationIsDone(connector.getConnection(), checker, query);
+                isDone = checker.mutationIsDone();
             }
         } catch (SQLException e) {
             System.out.println("Failed to updating album");
@@ -109,12 +99,14 @@ public class AlbumRepository implements CrudRepository<Album> {
 
     @Override
     public void delete(Integer id) {
-        String query = "ALTER TABLE albums DELETE WHERE id='" + id + "'";
+        String query = "ALTER TABLE albums DELETE WHERE id = ?";
 
-        try {
+        try (PreparedStatement statement = connector.getConnection().prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
             boolean isDone = false;
             while (!isDone) {
-                isDone = ClickHouseConnector.mutationIsDone(connector.getConnection(), checker, query);
+                isDone = checker.mutationIsDone();
             }
         } catch (SQLException e) {
             System.out.println("Failed to deleting album");
@@ -124,8 +116,8 @@ public class AlbumRepository implements CrudRepository<Album> {
 
     @Override
     public ResultSet findAll() {
-        try {
-            ResultSet resultSet = ClickHouseConnector.executeQuery(connector.getConnection(), "SELECT * FROM albums");
+        try (Statement statement = connector.getConnection().createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM albums");
             printRow(resultSet);
             return resultSet;
         } catch (SQLException e) {
@@ -141,15 +133,7 @@ public class AlbumRepository implements CrudRepository<Album> {
         System.out.println("id | name | genre | artist_name");
 
         while (resultSet.next()) {
-            Album album = new Album();
-            album.setId(resultSet.getInt("id"));
-            album.setName(resultSet.getString("name"));
-            album.setGenre(resultSet.getString("genre"));
-            Integer artistId = resultSet.getInt("artist_id");
-            Artist artist = artistRepository.findById(artistId);
-            if (artist.getId().equals(artistId)) {
-                album.setArtist(artist);
-            }
+            Album album = createAlbumByResultSet(resultSet);
             System.out.println(album.getId() + " | " +
                     album.getName() + " | " +
                     album.getGenre() + " | " +
@@ -157,5 +141,18 @@ public class AlbumRepository implements CrudRepository<Album> {
             albums.add(album);
         }
         return albums;
+    }
+
+    private Album createAlbumByResultSet(ResultSet resultSet) throws SQLException {
+        Album album = new Album();
+        album.setId(resultSet.getInt("id"));
+        album.setName(resultSet.getString("name"));
+        album.setGenre(resultSet.getString("genre"));
+        Integer artistId = resultSet.getInt("artist_id");
+        Artist artist = artistRepository.findById(artistId);
+        if (artist.getId().equals(artistId)) {
+            album.setArtist(artist);
+        }
+        return album;
     }
 }

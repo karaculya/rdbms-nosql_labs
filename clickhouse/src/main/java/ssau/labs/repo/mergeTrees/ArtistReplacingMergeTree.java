@@ -1,14 +1,15 @@
-package ssau.labs.mergeTrees;
+package ssau.labs.repo.mergeTrees;
 
 import ssau.labs.db.ClickHouseConnector;
 import ssau.labs.db.MutationChecker;
 import ssau.labs.model.Artist;
+import ssau.labs.repo.MergeTreeChecker;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class ArtistReplacingMergeTree {
+public class ArtistReplacingMergeTree implements MergeTreeChecker {
     private final ClickHouseConnector connector;
     private final MutationChecker checker;
 
@@ -22,9 +23,9 @@ public class ArtistReplacingMergeTree {
         String query = "CREATE OR REPLACE TABLE artistsReplacingMT("
                 + "id   UInt32, "
                 + "name String, "
-                + "last_tour UInt32 "
-                + ") ENGINE = ReplacingMergeTree(last_tour) "
-                + "ORDER BY id;";
+                + "version UInt32 "
+                + ") ENGINE = ReplacingMergeTree(version) "
+                + "ORDER BY id;" ;
 
         try (Statement statement = connector.getConnection().createStatement()) {
             statement.execute(query);
@@ -34,32 +35,24 @@ public class ArtistReplacingMergeTree {
         }
     }
 
-    public void insert(Artist artist, int lastTour) {
-        String query = "INSERT INTO artistsReplacingMT (id, name, last_tour) VALUES (" +
-                "'" + artist.getId() + "'," +
-                "'" + artist.getName() + "'," +
-                "'" + lastTour + "');";
-        try {
-            boolean isDone = false;
-            while (!isDone) {
-                isDone = ClickHouseConnector.mutationIsDone(connector.getConnection(), checker, query);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Override
+    public void insert(Artist artist, int version) {
+        String query = "INSERT INTO artistsReplacingMT (id, name, version) VALUES (?,?,?)" ;
+        MergeTreeChecker.execute(artist, version, query, connector, checker);
     }
 
-    public void selectWithLimitBy() {
-        String query = "SELECT * FROM artistsReplacingMT ORDER BY id LIMIT 1 by id;";
+    @Override
+    public void select() {
+        String query = "SELECT * FROM artistsReplacingMT ORDER BY version DESC LIMIT 1 by id;" ;
 
         try (Statement statement = connector.getConnection().createStatement()) {
             ResultSet set = statement.executeQuery(query);
             if (set != null) {
-                StringBuffer buffer = new StringBuffer("id | name | last_tour\n");
+                StringBuffer buffer = new StringBuffer("id | name | version\n");
                 while (set.next()) {
                     buffer.append(set.getInt("id")).append(" | ");
                     buffer.append(set.getString("name")).append(" | ");
-                    buffer.append(set.getInt("last_tour")).append("\n");
+                    buffer.append(set.getInt("version")).append("\n");
                 }
                 System.out.println(buffer);
             }

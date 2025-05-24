@@ -30,20 +30,4 @@ public class ClickHouseConnector {
     public ClickHouseConnection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
-
-    public static void execute(ClickHouseConnection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.execute(query);
-    }
-
-    public static ResultSet executeQuery(ClickHouseConnection connection, String query) throws SQLException {
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(query);
-    }
-
-    public static boolean mutationIsDone(ClickHouseConnection connection, MutationChecker checker, String query) throws SQLException {
-        ClickHouseConnector.execute(connection, query);
-        String mutationId = checker.getLastMutationId();
-        return checker.waitForMutation(mutationId);
-    }
 }
