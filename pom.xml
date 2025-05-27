@@ -18,6 +18,7 @@
         <module>redis</module>
         <module>mongo</module>
         <module>neo4j</module>
+        <module>cassandra</module>
     </modules>
 
     <properties>

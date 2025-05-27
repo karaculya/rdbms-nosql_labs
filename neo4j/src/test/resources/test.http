@@ -32,7 +32,7 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8080/api/artist
 
-###
+### ALBUMS
 POST http://localhost:8080/api/album
 Content-Type: application/json
 
@@ -83,7 +83,7 @@ DELETE http://localhost:8080/api/album/relation/Sulfur/Slipknot
 ### Удаление всех альбомов
 DELETE http://localhost:8080/api/album
 
-###
+### COMPOSITIONS
 POST http://localhost:8080/api/composition
 Content-Type: application/json
 
